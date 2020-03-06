@@ -1,181 +1,146 @@
-/**	
-	* Template Name: Be-Hero
-	* Version: 1.0	
-	* Template Scripts
-	* Author: MarkUps
-	* Author URI: http://www.markups.io/
-
-	Custom JS
-	
-	1. MAIN SLIDER
-	2. VIDEO POPUP
-	3. TESTIMONIALS (SLICK SLIDER)
-	4. SCROLL TOP BUTTON
-	5. CLIENTS SLIDEER ( SLICK SLIDER )
-	6. PORTFOLIO GALLERY
-	7. PORTFOLIO POPUP VIEW ( IMAGE LIGHTBOX )
-	
-	
-**/
+jQuery( document ).ready(function( $ ) {
 
 
+	"use strict";
 
-(function( $ ){
 
-	/* ----------------------------------------------------------- */
-	/*  1. MAIN SLIDER
-	/* ----------------------------------------------------------- */
-
-	$('.mu-slide').slick({
-		arrows: true,
-		dots: false,
-		infinite: true,
-		speed: 500,
-		autoplay: true,
-		cssEase: 'linear'
-	});
-
-	
-	/* ----------------------------------------------------------- */
-	/*  2. VIDEO POPUP
-	/* ----------------------------------------------------------- */
-
-   $('.mu-video-play-btn').on('click', function(event) {
-	   
-        event.preventDefault();
-        
-        $('.mu-video-iframe-area').addClass('mu-video-iframe-display');
-       
-    });
-   
-    // when click the close btn
-
-    // disappear iframe window
     
-    $('.mu-video-close-btn').on('click', function(event) {
-	    
-	    event.preventDefault();
-	    
-		$('.mu-video-iframe-area').removeClass('mu-video-iframe-display');
-		
-    });
-
-    // stop iframe if it is play while close the iframe window
-
-    $('.mu-video-close-btn').click(function(){
-
-        $('.mu-video-iframe').attr('src', $('.mu-video-iframe').attr('src'));
-
-    });
-
-    // when click overlay area
-
-     $('.mu-video-iframe-area').on('click', function(event) {
-	    
-	    event.preventDefault();
-	    
-		$('.mu-video-iframe-area').removeClass('mu-video-iframe-display');
-		
-    });
-
-	$('.mu-video-iframe-area, .mu-video-iframe').on('click', function(e){
-	    e.stopPropagation();
-	});
+        $(function() {
+            $( "#tabs" ).tabs();
+        });
 
 
-   	/* ----------------------------------------------------------- */
-	/*  3. TESTIMONIALS (SLICK SLIDER)
-	/* ----------------------------------------------------------- */
+        // Page loading animation
 
-		$('.mu-testimonial-slide').slick({
-			arrows: true,
-			dots: false,
-			infinite: true,
-			speed: 500,
-			autoplay: true,
-			cssEase: 'linear'
-		});
+        $("#preloader").animate({
+            'opacity': '0'
+        }, 600, function(){
+            setTimeout(function(){
+                $("#preloader").css("visibility", "hidden").fadeOut();
+            }, 300);
+        });
+        
 
-	/* ----------------------------------------------------------- */
-  	/*  4. SCROLL TOP BUTTON
-  	/* ----------------------------------------------------------- */
+        $(window).scroll(function() {
+          var scroll = $(window).scrollTop();
+          var box = $('.header-text').height();
+          var header = $('header').height();
 
-	  //Check to see if the window is top if not then display button
+          if (scroll >= box - header) {
+            $("header").addClass("background-header");
+          } else {
+            $("header").removeClass("background-header");
+          }
+        });
+		if ($('.owl-testimonials').length) {
+            $('.owl-testimonials').owlCarousel({
+                loop: true,
+                nav: false,
+                dots: true,
+                items: 1,
+                margin: 30,
+                autoplay: false,
+                smartSpeed: 700,
+                autoplayTimeout: 6000,
+                responsive: {
+                    0: {
+                        items: 1,
+                        margin: 0
+                    },
+                    460: {
+                        items: 1,
+                        margin: 0
+                    },
+                    576: {
+                        items: 2,
+                        margin: 20
+                    },
+                    992: {
+                        items: 2,
+                        margin: 30
+                    }
+                }
+            });
+        }
+        if ($('.owl-partners').length) {
+            $('.owl-partners').owlCarousel({
+                loop: true,
+                nav: false,
+                dots: true,
+                items: 1,
+                margin: 30,
+                autoplay: false,
+                smartSpeed: 700,
+                autoplayTimeout: 6000,
+                responsive: {
+                    0: {
+                        items: 1,
+                        margin: 0
+                    },
+                    460: {
+                        items: 1,
+                        margin: 0
+                    },
+                    576: {
+                        items: 2,
+                        margin: 20
+                    },
+                    992: {
+                        items: 4,
+                        margin: 30
+                    }
+                }
+            });
+        }
 
-	    jQuery(window).scroll(function(){
-	      if (jQuery(this).scrollTop() > 300) {
-	        jQuery('.scrollToTop').fadeIn();
-	      } else {
-	        jQuery('.scrollToTop').fadeOut();
-	      }
-	    });
-	     
-	    //Click event to scroll to top
+        $(".Modern-Slider").slick({
+            autoplay:true,
+            autoplaySpeed:10000,
+            speed:600,
+            slidesToShow:1,
+            slidesToScroll:1,
+            pauseOnHover:false,
+            dots:true,
+            pauseOnDotsHover:true,
+            cssEase:'linear',
+           // fade:true,
+            draggable:false,
+            prevArrow:'<button class="PrevArrow"></button>',
+            nextArrow:'<button class="NextArrow"></button>', 
+        });
 
-	    jQuery('.scrollToTop').click(function(){
-	      jQuery('html, body').animate({scrollTop : 0},800);
-	      return false;
-	    });
-	 
-		
-	/* ----------------------------------------------------------- */
-	/*  5. CLIENTS SLIDEER ( SLICK SLIDER )
-	/* ----------------------------------------------------------- */
+        function visible(partial) {
+            var $t = partial,
+                $w = jQuery(window),
+                viewTop = $w.scrollTop(),
+                viewBottom = viewTop + $w.height(),
+                _top = $t.offset().top,
+                _bottom = _top + $t.height(),
+                compareTop = partial === true ? _bottom : _top,
+                compareBottom = partial === true ? _top : _bottom;
 
-		$('.mu-clients-slider').slick({
-		  slidesToShow: 5,
-		  arrows: false,
-		  autoplay: true,
-		  responsive: [
-		    {
-		      breakpoint: 768,
-		      settings: {
-		        arrows: false,
-		        slidesToShow: 3
-		      }
-		    },
-		    {
-		      breakpoint: 480,
-		      settings: {
-		        arrows: false,
-		        slidesToShow: 2
-		      }
-		    }
-		  ]
-		});
+            return ((compareBottom <= viewBottom) && (compareTop >= viewTop) && $t.is(':visible'));
 
-	
-	/* ----------------------------------------------------------- */
-	/*  6. PORTFOLIO GALLERY
-	/* ----------------------------------------------------------- */ 
-	
-		$('.filtr-container').filterizr();
+        }
 
-		//Simple filter controls
+        $(window).scroll(function(){
 
-	    $('.mu-simplefilter li').click(function() {
-	       $('.mu-simplefilter li').removeClass('active');
-	        $(this).addClass('active');
-	    });
-
-
-	/* ----------------------------------------------------------- */
-	/*  7. PORTFOLIO POPUP VIEW ( IMAGE LIGHTBOX )
-	/* ----------------------------------------------------------- */ 
-
-	$('.mu-imglink').magnificPopup({
-	  type: 'image',
-	  mainClass: 'mfp-fade',
-	  gallery:{
-	    enabled:true
-	  }
-	});
-
-	
-	
-})( jQuery );
-
-
-
-  
-	
+          if(visible($('.count-digit')))
+            {
+              if($('.count-digit').hasClass('counter-loaded')) return;
+              $('.count-digit').addClass('counter-loaded');
+              
+        $('.count-digit').each(function () {
+          var $this = $(this);
+          jQuery({ Counter: 0 }).animate({ Counter: $this.text() }, {
+            duration: 3000,
+            easing: 'swing',
+            step: function () {
+              $this.text(Math.ceil(this.Counter));
+            }
+          });
+        });
+        }
+    })
+ 
+});
